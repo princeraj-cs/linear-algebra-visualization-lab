@@ -4,12 +4,14 @@ import { LessonLayout } from './components/layout/LessonLayout';
 import { PlaygroundLayout } from './components/layout/PlaygroundLayout';
 import { HomePage } from './modules/home/HomePage';
 import { ModulePage } from './modules/shared/ModulePage';
+import { LandingPage } from './modules/landing/LandingPage';
 
 function App() {
   return (
     <Routes>
+      <Route index element={<LandingPage />} />
       <Route element={<AppLayout />}>
-        <Route index element={<HomePage />} />
+        <Route path="dashboard" element={<HomePage />} />
         <Route
           path="learn"
           element={

@@ -19,7 +19,7 @@ export type NavigationItem = {
 };
 
 export const navigationItems: NavigationItem[] = [
-  { label: 'Dashboard', to: '/', icon: LayoutDashboard },
+  { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
   { label: 'Learn', to: '/learn', icon: BookOpen },
   { label: 'Vector Playground', to: '/vector-playground', icon: Compass },
   { label: 'Matrix Playground', to: '/matrix-playground', icon: Boxes },
@@ -29,4 +29,3 @@ export const navigationItems: NavigationItem[] = [
   { label: 'Practice', to: '/practice', icon: Calculator },
   { label: 'Progress', to: '/progress', icon: BarChart3 },
 ];
-

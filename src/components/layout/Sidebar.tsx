@@ -24,7 +24,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         }`}
       >
         <div className="flex h-16 items-center justify-between border-b border-slate-200 px-5 dark:border-slate-800">
-          <NavLink className="flex items-center gap-3" onClick={onClose} to="/">
+          <NavLink className="flex items-center gap-3" onClick={onClose} to="/dashboard">
             <span className="rounded-lg bg-accent-600 p-2 text-white">
               <Sigma aria-hidden="true" size={20} />
             </span>

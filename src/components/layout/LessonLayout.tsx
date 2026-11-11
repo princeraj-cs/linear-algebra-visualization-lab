@@ -41,7 +41,7 @@ export function LessonLayout({ description, sections, title }: LessonLayoutProps
             ))}
           </div>
           <div className="mt-10 flex justify-between border-t border-slate-200 pt-5 dark:border-slate-800">
-            <Link className="inline-flex items-center gap-2 text-sm font-medium text-slate-500" to="/">
+            <Link className="inline-flex items-center gap-2 text-sm font-medium text-slate-500" to="/dashboard">
               <ChevronLeft size={16} /> Dashboard
             </Link>
             <Link className="inline-flex items-center gap-2 text-sm font-semibold text-accent-600 dark:text-accent-400" to="/vector-playground">
