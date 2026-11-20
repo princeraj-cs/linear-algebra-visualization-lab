@@ -9,6 +9,55 @@
   background: #f8fafc;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+
+  --lab-ui-font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --lab-mono-font: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --lab-bg: #f8fafc;
+  --lab-surface: #ffffff;
+  --lab-surface-raised: #ffffff;
+  --lab-grid: rgba(30, 64, 175, 0.12);
+  --lab-grid-major: rgba(30, 64, 175, 0.24);
+  --lab-axis: #334155;
+  --lab-text: #0f172a;
+  --lab-muted: #64748b;
+  --lab-border: #cbd5e1;
+  --lab-input-space: #2563eb;
+  --lab-input-space-glow: rgba(37, 99, 235, 0.22);
+  --lab-output-space: #ea580c;
+  --lab-output-space-glow: rgba(234, 88, 12, 0.22);
+  --lab-eigen-direction: #16a34a;
+  --lab-eigen-glow: rgba(22, 163, 74, 0.28);
+  --lab-determinant-area: rgba(250, 204, 21, 0.24);
+  --lab-determinant-stroke: #eab308;
+  --lab-accent: #2563eb;
+  --lab-vector-u: #2563eb;
+  --lab-vector-v: #e11d48;
+  --lab-canvas-pattern:
+    linear-gradient(var(--lab-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--lab-grid) 1px, transparent 1px);
+}
+
+.dark {
+  --lab-bg: #090b10;
+  --lab-surface: #0d1117;
+  --lab-surface-raised: #121820;
+  --lab-grid: rgba(147, 197, 253, 0.055);
+  --lab-grid-major: rgba(147, 197, 253, 0.11);
+  --lab-axis: #94a3b8;
+  --lab-text: #e5e7eb;
+  --lab-muted: #94a3b8;
+  --lab-border: #263241;
+  --lab-input-space: #60a5fa;
+  --lab-input-space-glow: rgba(96, 165, 250, 0.38);
+  --lab-output-space: #fb923c;
+  --lab-output-space-glow: rgba(251, 146, 60, 0.38);
+  --lab-eigen-direction: #4ade80;
+  --lab-eigen-glow: rgba(74, 222, 128, 0.32);
+  --lab-determinant-area: rgba(250, 204, 21, 0.16);
+  --lab-determinant-stroke: #fde047;
+  --lab-canvas-pattern:
+    linear-gradient(var(--lab-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--lab-grid) 1px, transparent 1px);
 }
 
 * {
@@ -18,11 +67,61 @@
 body {
   margin: 0;
   min-width: 320px;
+  font-family: var(--lab-ui-font);
+  background: var(--lab-bg);
+  color: var(--lab-text);
+  transition: background-color 240ms ease, color 240ms ease;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.lab-surface {
+  background: var(--lab-surface);
+  border-color: var(--lab-border);
+  transition: background-color 240ms ease, border-color 240ms ease, color 240ms ease;
+}
+
+.lab-surface-raised {
+  background: var(--lab-surface-raised);
+  border-color: var(--lab-border);
+  transition: background-color 240ms ease, border-color 240ms ease;
+}
+
+.lab-canvas-grid {
+  background-color: var(--lab-surface);
+  background-image: var(--lab-canvas-pattern);
+  background-size: 32px 32px;
+  transition: background-color 240ms ease;
+}
+
+.lab-number,
+.lab-matrix-entry,
+.lab-coordinate,
+kbd {
+  font-family: var(--lab-mono-font);
+  font-variant-numeric: tabular-nums;
+}
+
+button,
+input,
+select,
+summary,
+a {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+:focus-visible {
+  outline: 2px solid var(--lab-input-space);
+  outline-offset: 3px;
 }
 
 @keyframes dashboard-reveal {

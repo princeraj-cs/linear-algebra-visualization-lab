@@ -19,27 +19,33 @@ const modules = [
 const recentTopics = ['Vector addition', 'Linear combinations', 'Reading matrix notation'];
 
 export function HomePage() {
+  const currentDate = new Intl.DateTimeFormat('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  }).format(new Date());
+
   return (
-    <div className="dashboard-enter relative mx-auto max-w-7xl overflow-hidden px-5 py-8 sm:px-8 lg:py-10">
-      <div aria-hidden="true" className="math-entrance pointer-events-none absolute right-8 top-8 hidden h-40 w-56 rounded-2xl border border-accent-100 dark:border-accent-500/20 sm:block">
-        <div className="math-grid absolute inset-0 rounded-2xl" />
-        <span className="math-vector math-vector-primary" />
-        <span className="math-vector math-vector-secondary" />
-        <span className="math-equation equation-one">Ax = b</span>
-        <span className="math-equation equation-two">v · w</span>
-      </div>
-      <section className="relative flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+    <div className="dashboard-enter relative mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:py-10">
+      <section className="grid items-end gap-5 lg:grid-cols-[minmax(0,1fr)_224px_auto]">
         <div className="dashboard-enter-item">
-          <p className="text-sm font-medium text-accent-600 dark:text-accent-400">Wednesday, November 11</p>
+          <p className="text-sm font-medium text-accent-600 dark:text-accent-400">{currentDate}</p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
-            Welcome back, learner.
+            Welcome back, PR.
           </h1>
           <p className="mt-2 max-w-xl text-slate-500 dark:text-slate-400">
             Keep building your linear algebra intuition. You are making steady progress.
           </p>
         </div>
+        <div aria-hidden="true" className="math-entrance pointer-events-none relative hidden h-40 rounded-2xl border border-accent-100 dark:border-accent-500/20 sm:block">
+          <div className="math-grid absolute inset-0 rounded-2xl" />
+          <span className="math-vector math-vector-primary" />
+          <span className="math-vector math-vector-secondary" />
+          <span className="math-equation equation-one">Ax = b</span>
+          <span className="math-equation equation-two">v · w</span>
+        </div>
         <Link
-          className="dashboard-enter-item inline-flex w-fit items-center gap-2 rounded-lg bg-accent-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-700"
+          className="dashboard-enter-item inline-flex w-fit items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-accent-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-700"
           to="/learn"
         >
           Continue learning <ArrowRight aria-hidden="true" size={16} />
@@ -53,7 +59,7 @@ export function HomePage() {
       </section>
 
       <section className="dashboard-enter-item mt-10">
-        <SectionHeading title="Continue learning" action="View all lessons" to="/learn" />
+        <SectionHeading title="Up next" action="View all lessons" to="/learn" />
         <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-6">
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-center">
             <div className="flex items-start gap-4">

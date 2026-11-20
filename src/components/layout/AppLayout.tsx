@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 export function AppLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
 
   return (
     <div className={isDark ? 'dark' : ''}>

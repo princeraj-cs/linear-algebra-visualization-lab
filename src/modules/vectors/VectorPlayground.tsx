@@ -136,7 +136,21 @@ export function VectorPlayground() {
 
   const handleWheel = (event: ReactWheelEvent<SVGSVGElement>) => {
     event.preventDefault();
-    setZoom((current) => Math.max(0.45, Math.min(3.5, current * (event.deltaY > 0 ? 0.9 : 1.1))));
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const pointerX = ((event.clientX - bounds.left) / bounds.width) * WIDTH;
+    const pointerY = ((event.clientY - bounds.top) / bounds.height) * HEIGHT;
+    const zoomFactor = Math.exp(-event.deltaY * 0.0012);
+    const nextZoom = Math.max(0.1, Math.min(8, zoom * zoomFactor));
+    const currentScale = 40 * zoom;
+    const nextScale = 40 * nextZoom;
+    const worldX = (pointerX - (WIDTH / 2 + pan.x)) / currentScale;
+    const worldY = ((HEIGHT / 2 + pan.y) - pointerY) / currentScale;
+
+    setPan({
+      x: pointerX - WIDTH / 2 - worldX * nextScale,
+      y: pointerY - HEIGHT / 2 + worldY * nextScale,
+    });
+    setZoom(nextZoom);
   };
 
   const handlePointerDown = (event: ReactPointerEvent<SVGSVGElement>) => {
@@ -207,9 +221,9 @@ export function VectorPlayground() {
               <span className="h-2 w-2 rounded-full bg-emerald-500" /> 2D coordinate plane
             </div>
             <div className="flex items-center gap-1">
-              <button aria-label="Zoom out" className="rounded-md p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => setZoom((value) => Math.max(0.45, value - 0.15))} type="button"><ZoomOut size={17} /></button>
+              <button aria-label="Zoom out" className="rounded-md p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => setZoom((value) => Math.max(0.1, value - 0.15))} type="button"><ZoomOut size={17} /></button>
               <span className="w-12 text-center text-xs font-semibold text-slate-500">{Math.round(zoom * 100)}%</span>
-              <button aria-label="Zoom in" className="rounded-md p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => setZoom((value) => Math.min(3.5, value + 0.15))} type="button"><ZoomIn size={17} /></button>
+              <button aria-label="Zoom in" className="rounded-md p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => setZoom((value) => Math.min(8, value + 0.15))} type="button"><ZoomIn size={17} /></button>
               <button aria-label="Center plane" className="ml-1 rounded-md px-2 py-1.5 text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => setPan({ x: 0, y: 0 })} type="button">Center</button>
             </div>
           </div>

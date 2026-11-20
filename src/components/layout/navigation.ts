@@ -9,7 +9,6 @@ import {
   LayoutDashboard,
   Network,
   Orbit,
-  Sigma,
 } from 'lucide-react';
 
 export type NavigationItem = {
@@ -24,7 +23,7 @@ export const navigationItems: NavigationItem[] = [
   { label: 'Vector Playground', to: '/vector-playground', icon: Compass },
   { label: 'Matrix Playground', to: '/matrix-playground', icon: Boxes },
   { label: 'Linear Systems', to: '/linear-systems', icon: Network },
-  { label: 'Vector Spaces', to: '/vector-spaces', icon: Sigma },
+  { label: 'Vector Spaces', to: '/vector-spaces', icon: CircleDot },
   { label: 'Orthogonality', to: '/orthogonality', icon: Orbit },
   { label: 'Practice', to: '/practice', icon: Calculator },
   { label: 'Progress', to: '/progress', icon: BarChart3 },
