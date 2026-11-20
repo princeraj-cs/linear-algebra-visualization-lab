@@ -5,6 +5,7 @@ import { PlaygroundLayout } from './components/layout/PlaygroundLayout';
 import { HomePage } from './modules/home/HomePage';
 import { ModulePage } from './modules/shared/ModulePage';
 import { LandingPage } from './modules/landing/LandingPage';
+import { VectorPlayground } from './modules/vectors/VectorPlayground';
 
 function App() {
   return (
@@ -24,12 +25,7 @@ function App() {
         />
         <Route
           path="vector-playground"
-          element={
-            <PlaygroundLayout
-              description="Experiment with vector direction, magnitude, and operations in a focused workspace."
-              title="Vector Playground"
-            />
-          }
+          element={<VectorPlayground />}
         />
         <Route
           path="matrix-playground"
