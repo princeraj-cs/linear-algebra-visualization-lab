@@ -32,6 +32,13 @@
   --lab-accent: #2563eb;
   --lab-vector-u: #2563eb;
   --lab-vector-v: #e11d48;
+  --unit-foundations: #60a5fa;
+  --unit-spaces: #a78bfa;
+  --unit-orthogonality: #34d399;
+  --unit-determinants: #fbbf24;
+  --unit-eigen: #fb7185;
+  --unit-symmetric: #22d3ee;
+  --unit-transformations: #f97316;
   --lab-canvas-pattern:
     linear-gradient(var(--lab-grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--lab-grid) 1px, transparent 1px);

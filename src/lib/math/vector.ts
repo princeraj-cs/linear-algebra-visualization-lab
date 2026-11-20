@@ -7,6 +7,7 @@ import type { Vector } from './types';
 
 /** Adds two vectors component by component. */
 export function vectorAdd(first: Vector, second: Vector): number[] {
+  // UI components and SVG coordinates must import these validated calculations instead of reimplementing them.
   validateVector(first, 'First vector');
   validateVector(second, 'Second vector');
   validateSameVectorDimensions(first, second, 'Vector addition');

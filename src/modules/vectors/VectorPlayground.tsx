@@ -136,6 +136,8 @@ export function VectorPlayground() {
 
   const handleWheel = (event: ReactWheelEvent<SVGSVGElement>) => {
     event.preventDefault();
+    // Convert pointer position from CSS pixels to the SVG's fixed coordinate system,
+    // then pan so the world point beneath the cursor remains beneath it after zoom.
     const bounds = event.currentTarget.getBoundingClientRect();
     const pointerX = ((event.clientX - bounds.left) / bounds.width) * WIDTH;
     const pointerY = ((event.clientY - bounds.top) / bounds.height) * HEIGHT;
@@ -171,6 +173,7 @@ export function VectorPlayground() {
   };
 
   const gridStep = useMemo(() => {
+    // Select a "nice" world-space interval (1, 2, 5, 10...) so axis density stays readable at every zoom level.
     const targetWorldStep = 40 / scale;
     const exponent = Math.floor(Math.log10(targetWorldStep));
     const fraction = targetWorldStep / 10 ** exponent;

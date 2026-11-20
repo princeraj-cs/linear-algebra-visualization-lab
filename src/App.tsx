@@ -1,28 +1,27 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { AppLayout } from './components/layout/AppLayout';
-import { LessonLayout } from './components/layout/LessonLayout';
 import { PlaygroundLayout } from './components/layout/PlaygroundLayout';
 import { HomePage } from './modules/home/HomePage';
 import { ModulePage } from './modules/shared/ModulePage';
 import { LandingPage } from './modules/landing/LandingPage';
 import { VectorPlayground } from './modules/vectors/VectorPlayground';
+import { MIT1806CourseMap } from './modules/learn/MIT1806CourseMap';
+import { MIT1806LecturePage } from './modules/learn/MIT1806LecturePage';
 
 function App() {
   return (
     <Routes>
+      {/* The public landing page has no application sidebar. */}
       <Route index element={<LandingPage />} />
+
+      {/* The remaining routes share one responsive sidebar/header layout. */}
       <Route element={<AppLayout />}>
         <Route path="dashboard" element={<HomePage />} />
         <Route
           path="learn"
-          element={
-            <LessonLayout
-              description="Start with the visual language of vectors and build toward the structures behind linear algebra."
-              sections={['What is a vector?', 'Visualizing direction and magnitude', 'Combining vectors']}
-              title="Vectors: the building blocks"
-            />
-          }
+          element={<MIT1806CourseMap />}
         />
+        <Route path="learn/:lectureId" element={<MIT1806LecturePage />} />
         <Route
           path="vector-playground"
           element={<VectorPlayground />}
