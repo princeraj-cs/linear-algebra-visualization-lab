@@ -2,7 +2,6 @@ import {
   ArrowRight,
   BarChart3,
   BookOpen,
-  CheckCircle2,
   ChevronDown,
   Compass,
   Layers3,
@@ -10,9 +9,16 @@ import {
   Play,
   Sparkles,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
 import { Link } from 'react-router-dom';
 
-const highlights = ['Interactive visual learning', 'Clear undergraduate explanations', 'Focused practice and progress'];
+const axioms = [
+  { name: 'Axiom 1 · See it', subtitle: 'Interactive visuals that reveal the structure.' },
+  { name: 'Axiom 2 · Move it', subtitle: 'Clear explanations for every transformation.' },
+  { name: 'Axiom 3 · Prove it', subtitle: 'Focused practice that makes ideas stick.' },
+];
 
 const modules = [
   { icon: Compass, title: 'Vectors', description: 'See magnitude, direction, and linear combinations in action.', color: 'blue' },
@@ -33,29 +39,76 @@ const faqs = [
 ];
 
 export function LandingPage() {
+  const [heroExpressionIndex, setHeroExpressionIndex] = useState(0);
+  const heroExpressions = [
+    { latex: 'Ax = b' },
+    { latex: '\\det(A)' },
+    { latex: '\\lambda' },
+    { latex: '\\Sigma' },
+    { latex: 'A^{-1}' },
+  ];
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = () => {
+      setHeroExpressionIndex(mediaQuery.matches ? heroExpressions.length : 0);
+    };
+    updatePreference();
+    mediaQuery.addEventListener('change', updatePreference);
+
+    if (mediaQuery.matches) return () => mediaQuery.removeEventListener('change', updatePreference);
+
+    const interval = window.setInterval(() => {
+      setHeroExpressionIndex((current) => (current + 1) % (heroExpressions.length + 1));
+    }, 3000);
+
+    return () => {
+      window.clearInterval(interval);
+      mediaQuery.removeEventListener('change', updatePreference);
+    };
+  }, [heroExpressions.length]);
+
   return (
     <main>
-      <section className="border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+      <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto grid min-h-[calc(100vh-8rem)] max-w-7xl items-center gap-12 px-5 py-16 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent-600 dark:text-accent-400">Linear algebra, made visible</p>
-            <h1 className="mt-5 text-5xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-6xl lg:text-7xl">
-              Explore the structures behind the equations.
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent-600">§1 · LINEAR ALGEBRA, MADE VISIBLE</p>
+            <h1 className="mt-5 max-w-[660px] text-5xl leading-[1.02] font-bold tracking-tight text-slate-950 sm:text-6xl lg:text-[64px]">
+              <span className="block">Explore the structures</span>
+              <span className="block">behind</span>
+              <span className="hero-expression-slot mt-1 block">
+                {heroExpressionIndex === heroExpressions.length ? (
+                  <span key="equations" className="hero-static-word text-slate-950">equations.</span>
+                ) : (
+                  <span
+                    key={heroExpressionIndex}
+                    aria-live="polite"
+                    className="hero-math-expression block"
+                    dangerouslySetInnerHTML={{
+                      __html: katex.renderToString(heroExpressions[heroExpressionIndex].latex, {
+                        throwOnError: false,
+                        displayMode: false,
+                      }),
+                    }}
+                  />
+                )}
+              </span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-400">
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
               Build intuition for vectors, matrices, and transformations through clear lessons and interactive visual experiences.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link className="inline-flex items-center gap-2 rounded-lg bg-accent-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-accent-700" to="/dashboard">
-                Enter the lab <ArrowRight aria-hidden="true" size={17} />
+                Enter the lab <span aria-hidden="true" className="lab-number text-base">∎</span>
               </Link>
-              <span className="text-sm text-slate-500 dark:text-slate-400">Designed for undergraduate learners</span>
+              <span className="lab-number text-sm text-slate-500">34 MIT lectures · 6 playgrounds · ∞ matrices</span>
             </div>
             <div className="mt-10 grid gap-3 sm:grid-cols-3">
-              {highlights.map((highlight) => (
-                <div className="flex items-start gap-2 text-sm text-slate-600 dark:text-slate-400" key={highlight}>
-                  <CheckCircle2 className="mt-0.5 shrink-0 text-emerald-500" size={16} />
-                  <span>{highlight}</span>
+              {axioms.map((axiom) => (
+                <div className="border-l border-[color:var(--lab-border)] pl-3" key={axiom.name}>
+                  <p className="lab-number text-xs font-bold text-slate-800">{axiom.name}</p>
+                  <p className="mt-1 text-xs leading-5 text-slate-500">{axiom.subtitle}</p>
                 </div>
               ))}
             </div>
@@ -147,15 +200,15 @@ export function LandingPage() {
 
 function MathPreview() {
   return (
-    <div className="relative flex min-h-[360px] items-center justify-center overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 p-8 dark:border-slate-800 dark:bg-slate-900">
-      <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(to_right,#cbd5e1_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e1_1px,transparent_1px)] [background-size:32px_32px] dark:opacity-20" />
+    <div className="relative flex min-h-[360px] items-center justify-center overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 p-8">
+      <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(to_right,#cbd5e1_1px,transparent_1px),linear-gradient(to_bottom,#cbd5e1_1px,transparent_1px)] [background-size:32px_32px]" />
       <div className="absolute h-56 w-px rotate-45 bg-accent-400/50" />
       <div className="absolute h-56 w-px -rotate-45 bg-violet-400/50" />
-      <div className="relative rounded-2xl border border-slate-200 bg-white p-8 shadow-lg dark:border-slate-700 dark:bg-slate-950">
-        <BookOpen className="text-accent-600 dark:text-accent-400" size={28} />
-        <p className="mt-6 font-mono text-3xl font-semibold text-slate-950 dark:text-white">v = (3, 2)</p>
+      <div className="relative rounded-2xl border border-slate-200 bg-white p-8 shadow-lg">
+        <BookOpen className="text-accent-600" size={28} />
+        <p className="mt-6 font-mono text-3xl font-semibold text-slate-950">v = (3, 2)</p>
         <div className="my-5 h-px w-full bg-accent-500" />
-        <p className="max-w-xs text-sm leading-6 text-slate-500 dark:text-slate-400">Connect notation, geometry, and computation.</p>
+        <p className="max-w-xs text-sm leading-6 text-slate-500">Connect notation, geometry, and computation.</p>
       </div>
     </div>
   );

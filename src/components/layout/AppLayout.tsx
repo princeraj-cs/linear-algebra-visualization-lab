@@ -18,7 +18,7 @@ export function AppLayout() {
             onMenuClick={() => setIsSidebarOpen(true)}
             onThemeToggle={() => setIsDark((current) => !current)}
           />
-          <main className="flex-1">
+          <main className="flex-1 overflow-x-hidden">
             <Outlet />
           </main>
           <Footer />

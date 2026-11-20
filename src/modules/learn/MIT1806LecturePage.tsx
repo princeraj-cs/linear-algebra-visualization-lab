@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ArrowLeft, ExternalLink, Play } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, Play } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { mit1806Lectures } from '../../data/mit1806';
 
@@ -28,8 +28,15 @@ type YouTubeWindow = Window & {
 };
 
 export function MIT1806LecturePage() {
-  const { lectureId } = useParams();
-  const lecture = mit1806Lectures.find((item) => item.id === lectureId);
+  const { id, lectureId } = useParams();
+  const routeLectureId = id ?? lectureId;
+  const lecture = mit1806Lectures.find((item) => item.id === routeLectureId);
+  const lectureIndex = mit1806Lectures.findIndex((item) => item.id === routeLectureId);
+  const previousLecture = lectureIndex > 0 ? mit1806Lectures[lectureIndex - 1] : null;
+  const nextLecture =
+    lectureIndex >= 0 && lectureIndex < mit1806Lectures.length - 1
+      ? mit1806Lectures[lectureIndex + 1]
+      : null;
 
   if (!lecture) {
     return (
@@ -64,6 +71,79 @@ export function MIT1806LecturePage() {
         </aside>
       </section>
 
+      <nav
+        aria-label="Lecture navigation"
+        className="mt-6 grid gap-3 sm:grid-cols-2"
+      >
+        {previousLecture ? (
+          <Link
+            aria-label={`Previous lecture: Lecture ${previousLecture.number}, ${previousLecture.title}`}
+            className="lab-surface group flex min-h-24 items-center gap-3 rounded-2xl border p-4 transition hover:border-[color:var(--lab-input-space)] hover:shadow-[0_0_20px_var(--lab-input-space-glow)]"
+            to={`/learn/mit-18-06/${previousLecture.id}`}
+          >
+            <ChevronLeft
+              aria-hidden="true"
+              className="shrink-0 text-slate-400 transition-transform group-hover:-translate-x-1 group-hover:text-accent-500"
+              size={20}
+            />
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Previous</p>
+              <p className="lab-number mt-1 text-xs text-accent-600 dark:text-accent-400">
+                Lecture {previousLecture.number}
+              </p>
+              <p className="mt-0.5 truncate text-sm font-semibold text-slate-800 dark:text-slate-200">
+                {previousLecture.title}
+              </p>
+            </div>
+          </Link>
+        ) : (
+          <div
+            aria-disabled="true"
+            className="lab-surface flex min-h-24 items-center gap-3 rounded-2xl border p-4 opacity-45"
+          >
+            <ChevronLeft aria-hidden="true" className="shrink-0" size={20} />
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Previous</p>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Beginning of course</p>
+            </div>
+          </div>
+        )}
+
+        {nextLecture ? (
+          <Link
+            aria-label={`Next lecture: Lecture ${nextLecture.number}, ${nextLecture.title}`}
+            className="lab-surface group flex min-h-24 items-center justify-end gap-3 rounded-2xl border p-4 text-right transition hover:border-[color:var(--lab-input-space)] hover:shadow-[0_0_20px_var(--lab-input-space-glow)]"
+            to={`/learn/mit-18-06/${nextLecture.id}`}
+          >
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Next</p>
+              <p className="lab-number mt-1 text-xs text-accent-600 dark:text-accent-400">
+                Lecture {nextLecture.number}
+              </p>
+              <p className="mt-0.5 truncate text-sm font-semibold text-slate-800 dark:text-slate-200">
+                {nextLecture.title}
+              </p>
+            </div>
+            <ChevronRight
+              aria-hidden="true"
+              className="shrink-0 text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-accent-500"
+              size={20}
+            />
+          </Link>
+        ) : (
+          <div
+            aria-disabled="true"
+            className="lab-surface flex min-h-24 items-center justify-end gap-3 rounded-2xl border p-4 text-right opacity-45"
+          >
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Next</p>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">End of course</p>
+            </div>
+            <ChevronRight aria-hidden="true" className="shrink-0" size={20} />
+          </div>
+        )}
+      </nav>
+
       <footer className="mt-8 border-t border-slate-200 py-6 text-center text-xs leading-5 text-slate-500 dark:border-slate-800 dark:text-slate-400">
         Lectures by Prof. Gilbert Strang, MIT OpenCourseWare 18.06{' '}
         <a className="underline underline-offset-2 hover:text-accent-600" href="https://web.mit.edu/18.06/www/" rel="noreferrer" target="_blank">(CC BY-NC-SA)</a>
@@ -89,6 +169,8 @@ function YouTubeLecturePlayer({ lectureId, title }: { lectureId: string; title: 
       playerRef.current = new youtubeWindow.YT.Player(containerId, {
         width: '100%',
         height: '100%',
+        // Supplying videoId in the constructor avoids a blank player if onReady fires after navigation.
+        videoId: lectureId,
         host: 'https://www.youtube-nocookie.com',
         playerVars: {
           modestbranding: 1,

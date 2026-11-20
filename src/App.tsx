@@ -2,11 +2,12 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { AppLayout } from './components/layout/AppLayout';
 import { PlaygroundLayout } from './components/layout/PlaygroundLayout';
 import { HomePage } from './modules/home/HomePage';
-import { ModulePage } from './modules/shared/ModulePage';
 import { LandingPage } from './modules/landing/LandingPage';
 import { VectorPlayground } from './modules/vectors/VectorPlayground';
 import { MIT1806CourseMap } from './modules/learn/MIT1806CourseMap';
 import { MIT1806LecturePage } from './modules/learn/MIT1806LecturePage';
+import { ModulePage } from './modules/shared/ModulePage';
+import { MIT1806UnitPage } from './modules/learn/MIT1806UnitPage';
 
 function App() {
   return (
@@ -21,7 +22,11 @@ function App() {
           path="learn"
           element={<MIT1806CourseMap />}
         />
-        <Route path="learn/:lectureId" element={<MIT1806LecturePage />} />
+        <Route
+          path="learn/mit-18-06/unit/:unitSlug"
+          element={<MIT1806UnitPage />}
+        />
+        <Route path="learn/mit-18-06/:id" element={<MIT1806LecturePage />} />
         <Route
           path="vector-playground"
           element={<VectorPlayground />}
